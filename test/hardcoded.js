@@ -1,16 +1,16 @@
-const { expect } = require("chai");
-const parse = require("../index").parse;
+import assert from "assert";
+import { parse } from "../index.js";
 
 describe("Parsing hardcoded", () => {
-    it("should detect if the release is hardcoded", () => {
-        const releaseName = "Ghost In The Shell 2017 1080p HC HDRip X264 AC3-EVO";
+  it("should detect if the release is hardcoded", () => {
+    const releaseName = "Ghost In The Shell 2017 1080p HC HDRip X264 AC3-EVO";
 
-        expect(parse(releaseName)).to.deep.include({ hardcoded: true });
-    });
+    assert.deepStrictEqual(parse(releaseName).hardcoded, true);
+  });
 
-    it("should not detect hardcoded when the release is not flagged as such", () => {
-        const releaseName = "Have I Got News For You S53E02 EXTENDED 720p HDTV x264-QPEL";
-
-        expect(parse(releaseName)).to.not.have.property("hardcoded");
-    });
+  it("should not detect hardcoded when the release is not flagged as such", () => {
+    const releaseName =
+      "Have I Got News For You S53E02 EXTENDED 720p HDTV x264-QPEL";
+    assert.deepStrictEqual(parse(releaseName).hardcoded, undefined);
+  });
 });

@@ -7,25 +7,28 @@ This package helps you extract information from a torrent name such as language,
 ## Installation
 
 You can install it using npm:
+
 ```bash
 npm install parse-torrent-title
 ```
+
 You should use Node 8.0 or higher to use this package.
 
 ## Usage
 
 A simple usage is as follows:
+
 ```javascript
 const ptt = require("parse-torrent-title");
 const information = ptt.parse("Game.of.Thrones.S01E01.720p.HDTV.x264-CTU");
 
-console.log(information.title);      // Game of Thrones
-console.log(information.season);     // 1
-console.log(information.episode);    // 1
+console.log(information.title); // Game of Thrones
+console.log(information.season); // 1
+console.log(information.episode); // 1
 console.log(information.resolution); // 720p
-console.log(information.codec);      // x264
-console.log(information.source);     // HDTV
-console.log(information.group);      // CTU
+console.log(information.codec); // x264
+console.log(information.source); // HDTV
+console.log(information.group); // CTU
 ```
 
 ## Advanced usage
@@ -39,7 +42,9 @@ If you want an extra field to be populated, you can use a regular expression as 
 ```javascript
 const ptt = require("parse-torrent-title");
 ptt.addHandler("part", /Part[. ]([0-9])/i, { type: "integer" });
-const information = ptt.parse("Silent.Witness.S18E03.Falling.Angels.Part.1.720p.HDTV.x264-FTP");
+const information = ptt.parse(
+  "Silent.Witness.S18E03.Falling.Angels.Part.1.720p.HDTV.x264-FTP",
+);
 
 console.log(information.part); // 1
 ```
@@ -49,15 +54,15 @@ If you want to keep only a part of the matched regular expression, you should us
 
 For regular expressions, the following options are available:
 
-* `skipIfAlreadyFound` (default to `true`) which will skip the regular expression if a previous handler for the same
-information already found something.
-* `type` (default to `string`) which indicates what is the expected output of the regular expression.
-It can be:
-  * `string`: does nothing
-  * `integer`: convert the matching part into an integer
-  * `lowercase`: convert the matching part to lowercase
-  * `boolean`: convert to true if there is a matching part
-* `value` (default to undefined) which, if defined, set the specified value instead of the matching part as the result
+- `skipIfAlreadyFound` (default to `true`) which will skip the regular expression if a previous handler for the same
+  information already found something.
+- `type` (default to `string`) which indicates what is the expected output of the regular expression.
+  It can be:
+  - `string`: does nothing
+  - `integer`: convert the matching part into an integer
+  - `lowercase`: convert the matching part to lowercase
+  - `boolean`: convert to true if there is a matching part
+- `value` (default to undefined) which, if defined, set the specified value instead of the matching part as the result
 
 ### Handlers
 
@@ -67,17 +72,21 @@ If the matched string is not part of the title, it should return the beginning o
 
 ```javascript
 const ptt = require("parse-torrent-title");
-const information = ptt.parse("[REQ] Harry Potter And The Prisoner Of Azkaban 2004 1080p BluRay DTS x264-hV");
+const information = ptt.parse(
+  "[REQ] Harry Potter And The Prisoner Of Azkaban 2004 1080p BluRay DTS x264-hV",
+);
 console.log(information.isHarryPotterRelated); // undefined
 
 ptt.addHandler(({ title, result }) => {
-    const match = title.match(/harry.potter/i);
-    if (match) {
-        result.isHarryPotterRelated = true;
-    }
+  const match = title.match(/harry.potter/i);
+  if (match) {
+    result.isHarryPotterRelated = true;
+  }
 });
 
-const information2 = ptt.parse("[REQ] Harry Potter And The Prisoner Of Azkaban 2004 1080p BluRay DTS x264-hV");
+const information2 = ptt.parse(
+  "[REQ] Harry Potter And The Prisoner Of Azkaban 2004 1080p BluRay DTS x264-hV",
+);
 console.log(information2.isHarryPotterRelated); // true
 ```
 
@@ -85,6 +94,7 @@ console.log(information2.isHarryPotterRelated); // true
 
 You may want several parsers within the same project.
 To do that, you can simply create new parsers:
+
 ```javascript
 const { Parser } = require("parse-torrent-title");
 const parser = new Parser();
@@ -93,6 +103,7 @@ const anotherParser = new Parser();
 
 By default, a freshly created parser has no handler.
 If you want to add default handlers to a parser, you can do so using the specific method:
+
 ```javascript
 const { Parser, addDefaults } = require("parse-torrent-title");
 const parser = new Parser();
@@ -116,15 +127,17 @@ Example:
 import { Parser, DefaultParserResult, addDefaults } from "parse-torrent-title";
 
 interface ParserResult extends DefaultParserResult {
-    part?: number;
+  part?: number;
 }
 
 const parser = new Parser<ParserResult>();
 addDefaults(parser);
-parser.addHandler('part', /(?:Part|CD)[. ]?([0-9])/i, { type: 'integer' })
+parser.addHandler("part", /(?:Part|CD)[. ]?([0-9])/i, { type: "integer" });
 const parse = parser.parse;
 
-const result = parse('Watergate.2018.Part1.DOC.SUBFRENCH.1080p.HDTV.H264-ELEARNiNG');
+const result = parse(
+  "Watergate.2018.Part1.DOC.SUBFRENCH.1080p.HDTV.H264-ELEARNiNG",
+);
 console.log(result.year); // 2018 - it works as before
 console.log(result.part); // 1 - `part` is now a known property of the `result` object
 ```

@@ -1,13 +1,12 @@
-const Parser = require("./src/parser").Parser;
-const handlers = require("./src/handlers");
-const trasformers = require("./src/transformers");
+import { Parser } from "./src/parser.js";
+import { addDefaults } from "./src/handlers.js";
 
 const defaultParser = new Parser();
 
-handlers.addDefaults(defaultParser);
+addDefaults(defaultParser);
 
-exports.addDefaults = handlers.addDefaults;
-exports.addHandler = (handlerName, handler, options) => defaultParser.addHandler(handlerName, handler, options);
-exports.parse = title => defaultParser.parse(title);
-exports.Parser = Parser;
-exports.Transformers = trasformers;
+export { addDefaults };
+export { Parser }
+export const addHandler = (handlerName, handler, options) =>
+  defaultParser.addHandler(handlerName, handler, options);
+export const parse = (title) => defaultParser.parse(title);
