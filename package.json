@@ -1,5 +1,5 @@
 {
-  "name": "parse-torrent-filename",
+  "name": "@brawdunoir/parse-torrent-filename",
   "version": "1.0.0",
   "description": "Parse torrent filenames to extract useful information",
   "main": "index.js",
