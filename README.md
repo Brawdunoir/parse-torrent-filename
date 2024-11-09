@@ -1,6 +1,9 @@
-# parse-torrent-title
+# parse-torrent-filename
+
 
 ![Continuous integration](https://github.com/clement-escolano/parse-torrent-title/workflows/Continuous%20integration/badge.svg)
+
+Forked from [parse-torrent-title](https://github.com/clement-escolano/parse-torrent-title) but migrated to ES6.
 
 This package helps you extract information from a torrent name such as language, resolution and codec.
 
